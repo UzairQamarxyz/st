@@ -1,4 +1,5 @@
 # Custom st build
+![enter image description here](https://github.com/UzayrQamarxyz/st/blob/master/screenshot.png)
 ## Features
 - Compatibility with `Xresources` and `Pywal` for dynamic coloring
 - Clipboard compatibility
