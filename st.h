@@ -8,6 +8,7 @@
 #define MAX(a, b)		((a) < (b) ? (b) : (a))
 #define LEN(a)			(sizeof(a) / sizeof(a)[0])
 #define BETWEEN(x, a, b)	((a) <= (x) && (x) <= (b))
+#define OUT(x, a, b)		((a) <= (x) || (x) <= (b))
 #define DIVCEIL(n, d)		(((n) + ((d) - 1)) / (d))
 #define DEFAULT(a, b)		(a) = (a) ? (a) : (b)
 #define LIMIT(x, a, b)		(x) = (x) < (a) ? (a) : (x) > (b) ? (b) : (x)
@@ -35,6 +36,12 @@ enum glyph_attribute {
 	ATTR_WDUMMY     = 1 << 10,
 	ATTR_BOXDRAW    = 1 << 11,
 	ATTR_BOLD_FAINT = ATTR_BOLD | ATTR_FAINT,
+};
+
+enum drawing_mode {
+    DRAW_NONE = 0,
+    DRAW_BG = 1 << 0,
+    DRAW_FG = 1 << 1,
 };
 
 enum selection_mode {
@@ -90,12 +97,12 @@ void sendbreak(const Arg *);
 void toggleprinter(const Arg *);
 
 int tattrset(int);
-int tisaltscr(void);
 void tnew(int, int);
 void tresize(int, int);
+void tmoveto(int x, int y);
 void tsetdirtattr(int);
 void ttyhangup(void);
-int ttynew(char *, char *, char *, char **);
+int ttynew(const char *, char *, const char *, char **);
 size_t ttyread(void);
 void ttyresize(int, int);
 void ttywrite(const char *, size_t, int);
@@ -113,7 +120,7 @@ size_t utf8encode(Rune, char *);
 
 void *xmalloc(size_t);
 void *xrealloc(void *, size_t);
-char *xstrdup(char *);
+char *xstrdup(const char *);
 
 int isboxdraw(Rune);
 ushort boxdrawindex(const Glyph *);
@@ -130,8 +137,11 @@ extern char *stty_args;
 extern char *vtiden;
 extern wchar_t *worddelimiters;
 extern int allowaltscreen;
+extern int allowwindowops;
 extern char *termname;
 extern unsigned int tabspaces;
 extern unsigned int defaultfg;
 extern unsigned int defaultbg;
+extern unsigned int defaultcs;
 extern const int boxdraw, boxdraw_bold, boxdraw_braille;
+extern float alpha;
